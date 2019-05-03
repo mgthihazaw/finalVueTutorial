@@ -15,6 +15,10 @@ export default {
   components: {
     AppHeader,
     AppFooter
+  },
+  created(){
+    
+    this.$store.dispatch('admin/refreshToken')
   }
 }
 </script>

@@ -6,6 +6,11 @@ import Button from './components/UI/Button.vue'
 import { MdCard } from 'vue-material/dist/components'
 import store from './Store/store.js'
 import 'vue-material/dist/vue-material.min.css'
+import Vuelidate from 'vuelidate'
+
+//Vue use Vuelidate
+Vue.use(Vuelidate)
+
 // Vue Material
 Vue.use(MdCard)
 

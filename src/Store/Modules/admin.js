@@ -6,19 +6,46 @@ const FbApiKey="AIzaSyAjADkjl2tPPmUJWsVFJCOFT5ofqG3sHvk"
 const admin = {
     namespaced : true,
     state:{
-         email:'',
+        
          token:'',
-         refresh:''
+         refresh:'',
+         authFailed: false
     },
     getters:{
-
+        isAuth(state){
+            if(state.token){
+                return true;
+            }
+            return false;
+        }
     },
     mutations:{
         auth(state,data){
-          state.email=data.email
+          
           state.token=data.idToken
            state.refresh=data.refreshToken
-          router.push('/')
+          if(data.type==='signin'){
+              router.push('/dashboard')
+          }
+          else{
+            router.push('/')
+          }
+        },
+        authFailed(state,type){
+            
+            if(type=='reset'){
+                state.authFailed=false
+            }
+            else{
+                state.authFailed=true
+            }
+        },
+        logoutUser(state){
+            state.token=null;
+            state.refresh=null;
+
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken')
         }
 
     },
@@ -30,7 +57,7 @@ const admin = {
              })
              .then(res=>res.json())
              .then(response=>{
-                 console.log(response)
+                 
                  commit('auth',{
                      ...response,
                      type:'signin'
@@ -39,8 +66,28 @@ const admin = {
                  localStorage.setItem("refresh",response.refreshToken)
              })
              .catch(error=>{
-                 console.log(error)
+               commit("authFailed")
              })
+         },
+         refreshToken({commit}){
+           const refreshToken=localStorage.getItem('refresh');
+           
+           if(refreshToken!=null){
+               Vue.http.post(`https://securetoken.googleapis.com/v1/token?key=${FbApiKey}`,{
+                grant_type: 'refresh_token',
+                refresh_token : refreshToken
+               })
+               .then(response=>response.json())
+               .then(data=>{
+                   commit("auth",{
+                       idToken: data.id_token,
+                       refreshToken:data.refresh_token,
+                       type: 'refresh'
+                   });
+                   localStorage.setItem("token",data.id_token)
+                   localStorage.setItem("refresh",data.refresh_token)
+               })
+           }
          }
     }
 }
