@@ -345,6 +345,7 @@ button {
 .post_delete{ 
     color: #F44336;
     font-weight: 700;  
+    cursor: pointer;
 }
 
 .not_found_container {

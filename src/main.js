@@ -8,14 +8,15 @@ import store from './Store/store.js'
 import 'vue-material/dist/vue-material.min.css'
 import Vuelidate from 'vuelidate'
 import wysiwyg from "vue-wysiwyg";
-import { MdDialog, MdButton ,MdContent} from 'vue-material/dist/components'
+import { MdDialog, MdButton ,MdContent,MdTable,MdDialogConfirm } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 
 //Vue  Material
 Vue.use(MdButton)
 Vue.use(MdContent)
-
+Vue.use(MdTable)
 Vue.use(MdDialog)
+Vue.use(MdDialogConfirm)
 
 //WYS WYG
 Vue.use(wysiwyg, {});
