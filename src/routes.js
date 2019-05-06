@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard/index'
 import MainDashboard from './components/Dashboard/main.vue';
 import AddPosts from './components/Dashboard/addPosts.vue';
 import PostLists from './components/Dashboard/listPosts.vue';
+import Post from './components/Post/post.vue'
 
 Vue.use(VueRouter);
 const authGuard = {
@@ -52,7 +53,8 @@ const routes = [
             {path: 'add_posts',component: AddPosts},
             {path: 'posts_list', component: PostLists}
         ], ...authGuard
-    }
+    },
+    { path:'/posts/:id' ,component : Post}
 ];
 
 export default new VueRouter({

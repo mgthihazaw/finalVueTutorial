@@ -7,6 +7,7 @@
                <input
                type="file"
                @change="processFile($event)"
+               ref="myFile"
                >
             </div>
             <div v-if="imageUpload!=null">
@@ -128,11 +129,13 @@ export default {
            let status= this.$store.getters['admin/addPostStatus'];
            if(status){
                this.clearPost()
+               this.$store.commit('admin/clearImageUpload')
            }
            return status;
         },
         imageUpload(){
             let imageUrl=this.$store.getters['admin/imageUpload'];
+            this.formdata.img=imageUrl
             return imageUrl;
         }
 
@@ -140,6 +143,7 @@ export default {
     methods:{
         clearPost(){
             this.$v.$reset()
+            this.$refs.myFile.value=''
             this.formdata={
                 title:'',
                 desc:'',
@@ -154,7 +158,7 @@ export default {
             
             },
         submitHandle(){
-            
+        
             if(!this.$v.$invalid){
                 if(this.formdata.content==""){
                   
@@ -182,6 +186,9 @@ export default {
             let file=event.target.files[0];
             this.$store.dispatch('admin/imageUpload',file);
         }
+    },
+    destroyed(){
+        this.$store.commit('admin/clearImageUpload')
     }
 }
 </script>
